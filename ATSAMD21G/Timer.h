@@ -4,7 +4,7 @@
 #include "../VirtualTimer.h"
 #include <Arduino.h>
 
-class TimerTCC : public VirtualTimer
+class Timer : public VirtualTimer
 {
 private:
     int pwmPeriod;
@@ -13,7 +13,7 @@ public:
     void (*isrCallback)();
     Tcc* timer;
 
-    TimerTCC(Tcc* timer) {
+    Timer(Tcc* timer) {
         this->timer = timer;
         if(timer == TCC0 || timer == TCC1) {
             timer_resolution = 16777216;
@@ -112,29 +112,10 @@ public:
     }
 };
 
-TimerTCC TimerTCC0(TCC0);
-TimerTCC TimerTCC1(TCC1);
-TimerTCC TimerTCC2(TCC2);
+extern Timer TimerTCC0;
+extern Timer TimerTCC1;
+extern Timer TimerTCC2;
 
-void TCC0_Handler() {
-    if(TCC0->INTFLAG.bit.OVF) {
-        TCC0->INTFLAG.bit.OVF = 1;
-        TimerTCC0.isrCallback();
-    }
-}
 
-void TCC1_Handler() {
-    if(TCC1->INTFLAG.bit.OVF) {
-        TCC1->INTFLAG.bit.OVF = 1;
-        TimerTCC1.isrCallback();
-    }
-}
-
-void TCC2_Handler() {
-    if(TCC2->INTFLAG.bit.OVF) {
-        TCC2->INTFLAG.bit.OVF = 1;
-        TimerTCC2.isrCallback();
-    }
-}
 
 #endif
