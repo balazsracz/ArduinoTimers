@@ -9,6 +9,7 @@ class Timer : public VirtualTimer
 private:
     int pwmPeriod;
     unsigned long timer_resolution;
+    unsigned long lastMicroseconds;
 public:
     void (*isrCallback)();
     Tcc* timer;
@@ -20,6 +21,7 @@ public:
         } else {
             timer_resolution = 65536;
         }
+        lastMicroseconds = 0;
     }
 
     void initialize() {
@@ -60,6 +62,10 @@ public:
 
     }
     void setPeriod(unsigned long microseconds) {
+        if(microseconds == lastMicroseconds)
+            return;
+        lastMicroseconds = microseconds;
+        
         const unsigned long cycles = F_CPU / 1000000 * microseconds;    // cycles corresponds to how many clock ticks per microsecond times number of microseconds we want
         if(cycles < timer_resolution) {
             timer->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV1_Val);

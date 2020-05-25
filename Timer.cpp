@@ -37,21 +37,25 @@ Timer Timer5(5);
 
 ISR(TIMER1_OVF_vect)
 {
+    interrupts();
     Timer1.isrCallback();
 }
 
 ISR(TIMER3_OVF_vect)
 {
+    interrupts();
     Timer3.isrCallback();
 }
 
 ISR(TIMER4_OVF_vect)
 {
+    interrupts();
     Timer4.isrCallback();
 }
 
 ISR(TIMER5_OVF_vect)
 {
+    interrupts();
     Timer5.isrCallback();
 }
 

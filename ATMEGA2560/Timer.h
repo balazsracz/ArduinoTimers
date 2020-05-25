@@ -10,6 +10,7 @@ private:
     unsigned long timer_resolution;
     unsigned char clockSelectBits;
     int timer_num;
+    unsigned long lastMicroseconds;
 public:
 void (*isrCallback)();
     Timer(int timer_num) {
@@ -23,32 +24,36 @@ void (*isrCallback)();
             break;
         }
         this->timer_num = timer_num;
+        lastMicroseconds = 0;
     }
 
     void initialize() {
         switch (timer_num)
         {
         case 1:
-            TCCR1B = _BV(WGM13);
-            TCCR1A = 0;
+            TCCR1B = _BV(WGM13) | _BV(WGM12);
+            TCCR1A = _BV(WGM11);
             break;
         case 3:
-            TCCR3B = _BV(WGM33);
-            TCCR3A = 0;
+            TCCR3B = _BV(WGM33) | _BV(WGM32);
+            TCCR3A = _BV(WGM31);
             break;
         case 4:
-            TCCR4B = _BV(WGM43);
-            TCCR4A = 0;
+            TCCR4B = _BV(WGM43) | _BV(WGM42);
+            TCCR4A = _BV(WGM41);
             break;
         case 5:
-            TCCR5B = _BV(WGM53);
-            TCCR5A = 0;
+            TCCR5B = _BV(WGM53) | _BV(WGM52);
+            TCCR5A = _BV(WGM51);
             break;
         }
     }
 
     void setPeriod(unsigned long microseconds) {
-        const unsigned long cycles = (F_CPU / 2000000) * microseconds;
+        if(microseconds == lastMicroseconds)
+            return;
+        lastMicroseconds = microseconds;
+        const unsigned long cycles = (F_CPU / 1000000) * microseconds;
         if (cycles < timer_resolution) {
             clockSelectBits = 1 << 0;
             pwmPeriod = cycles;
@@ -77,19 +82,19 @@ void (*isrCallback)();
         {
         case 1:
             ICR1 = pwmPeriod;
-            TCCR1B = _BV(WGM13) | clockSelectBits;
+            TCCR1B = _BV(WGM13) | _BV(WGM12) | clockSelectBits;
             break;
         case 3:
             ICR3 = pwmPeriod;
-            TCCR3B = _BV(WGM33) | clockSelectBits;
+            TCCR3B = _BV(WGM33) | _BV(WGM32) | clockSelectBits;
             break;
         case 4:
             ICR4 = pwmPeriod;
-            TCCR4B = _BV(WGM43) | clockSelectBits;
+            TCCR4B = _BV(WGM43) | _BV(WGM42) | clockSelectBits;
             break;
         case 5:
             ICR5 = pwmPeriod;
-            TCCR5B = _BV(WGM53) | clockSelectBits;
+            TCCR5B = _BV(WGM53) | _BV(WGM52) | clockSelectBits;
             break;
         }
         
