@@ -46,113 +46,30 @@ void (*isrCallback)();
             break;
         }
     }
+
     void setPeriod(unsigned long microseconds) {
-        const unsigned long cycles = (F_CPU / 1000000) * microseconds;
+        const unsigned long cycles = (F_CPU / 2000000) * microseconds;
         if (cycles < timer_resolution) {
-            switch (timer_num)
-            {
-            case 1:
-                clockSelectBits = _BV(CS10);
-                break;
-            case 3:
-                clockSelectBits = _BV(CS30);
-                break;
-            case 4:
-                clockSelectBits = _BV(CS40);
-                break;
-            case 5:
-                clockSelectBits = _BV(CS50);
-                break;
-            }
+            clockSelectBits = 1 << 0;
             pwmPeriod = cycles;
         } else
         if (cycles < timer_resolution * 8) {
-            switch (timer_num)
-            {
-            case 1:
-                clockSelectBits = _BV(CS11);
-                break;
-            case 3:
-                clockSelectBits = _BV(CS31);
-                break;
-            case 4:
-                clockSelectBits = _BV(CS41);
-                break;
-            case 5:
-                clockSelectBits = _BV(CS51);
-                break;
-            }
+            clockSelectBits = 1 << 1;
             pwmPeriod = cycles / 8;
         } else
         if (cycles < timer_resolution * 64) {
-            switch (timer_num)
-            {
-            case 1:
-                clockSelectBits = _BV(CS11) | _BV(CS10);
-                break;
-            case 3:
-                clockSelectBits = _BV(CS31) | _BV(CS30);
-                break;
-            case 4:
-                clockSelectBits = _BV(CS41) | _BV(CS40);
-                break;
-            case 5:
-                clockSelectBits = _BV(CS51) | _BV(CS50);
-                break;
-            }
+            clockSelectBits = (1 << 0) | (1 << 1);
             pwmPeriod = cycles / 64;
         } else
         if (cycles < timer_resolution * 256) {
-            switch (timer_num)
-            {
-            case 1:
-                clockSelectBits = _BV(CS12);
-                break;
-            case 3:
-                clockSelectBits = _BV(CS32);
-                break;
-            case 4:
-                clockSelectBits = _BV(CS42);
-                break;
-            case 5:
-                clockSelectBits = _BV(CS52);
-                break;
-            }
+            clockSelectBits = 1 << 2;
             pwmPeriod = cycles / 256;
         } else
         if (cycles < timer_resolution * 1024) {
-            switch (timer_num)
-            {
-            case 1:
-                clockSelectBits = _BV(CS12) | _BV(CS10);
-                break;
-            case 3:
-                clockSelectBits = _BV(CS32) | _BV(CS30);
-                break;
-            case 4:
-                clockSelectBits = _BV(CS42) | _BV(CS40);
-                break;
-            case 5:
-                clockSelectBits = _BV(CS52) | _BV(CS50);
-                break;
-            }
+            clockSelectBits = (1 << 2) | (1 << 0);
             pwmPeriod = cycles / 1024;
         } else {
-            switch (timer_num)
-            {
-            case 1:
-                clockSelectBits = _BV(CS12) | _BV(CS10);
-                break;
-            case 3:
-                clockSelectBits = _BV(CS32) | _BV(CS30);
-                break;
-            case 4:
-                clockSelectBits = _BV(CS42) | _BV(CS40);
-                break;
-            case 5:
-                clockSelectBits = _BV(CS52) | _BV(CS50);
-                break;
-            }
+            clockSelectBits = (1 << 2) | (1 << 0);
             pwmPeriod = timer_resolution - 1;
         }
 
