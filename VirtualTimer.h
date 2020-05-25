@@ -11,8 +11,6 @@ public:
 
     virtual void attachInterrupt(void (*isr)()) = 0;
     virtual void detachInterrupt() = 0;
-
-    static void isrDefaultUnused() {};
 private:
 
 };
