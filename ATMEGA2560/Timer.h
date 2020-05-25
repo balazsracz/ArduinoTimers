@@ -262,29 +262,11 @@ void (*isrCallback)();
 
 };
 
-Timer Timer1(1);
-Timer Timer3(3);
-Timer Timer4(4);
-Timer Timer5(5);
+extern Timer Timer1;
+extern Timer Timer3;
+extern Timer Timer4;
+extern Timer Timer5;
 
-ISR(TIMER1_OVF_vect)
-{
-    Timer1.isrCallback();
-}
 
-ISR(TIMER3_OVF_vect)
-{
-    Timer3.isrCallback();
-}
-
-ISR(TIMER4_OVF_vect)
-{
-    Timer4.isrCallback();
-}
-
-ISR(TIMER5_OVF_vect)
-{
-    Timer5.isrCallback();
-}
 
 #endif

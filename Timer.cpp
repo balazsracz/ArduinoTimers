@@ -1,6 +1,6 @@
 #if defined(ATSAMD21G)
 
-#include "Timer.h"
+#include "ATSAMD21G/Timer.h"
 
 Timer TimerTCC0(TCC0);
 Timer TimerTCC1(TCC1);
@@ -26,6 +26,35 @@ void TCC2_Handler() {
         TimerTCC2.isrCallback();
     }
 }
+#elif defined(ATMEGA2560)
+
+#include "ATMEGA2560/Timer.h"
+
+Timer Timer1(1);
+Timer Timer3(3);
+Timer Timer4(4);
+Timer Timer5(5);
+
+ISR(TIMER1_OVF_vect)
+{
+    Timer1.isrCallback();
+}
+
+ISR(TIMER3_OVF_vect)
+{
+    Timer3.isrCallback();
+}
+
+ISR(TIMER4_OVF_vect)
+{
+    Timer4.isrCallback();
+}
+
+ISR(TIMER5_OVF_vect)
+{
+    Timer5.isrCallback();
+}
+
 
 
 #endif
