@@ -47,7 +47,7 @@ void (*isrCallback)();
         }
     }
     void setPeriod(unsigned long microseconds) {
-        const unsigned long cycles = (F_CPU / 2000000) * microseconds;
+        const unsigned long cycles = (F_CPU / 1000000) * microseconds;
         if (cycles < timer_resolution) {
             switch (timer_num)
             {

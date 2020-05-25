@@ -62,53 +62,70 @@ public:
     void setPeriod(unsigned long microseconds) {
         const unsigned long cycles = F_CPU / 1000000 * microseconds;    // cycles corresponds to how many clock ticks per microsecond times number of microseconds we want
         if(cycles < timer_resolution) {
-            TCC0->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV1_Val);
+            timer->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV1_Val);
             pwmPeriod = cycles;
         } else
         if(cycles < timer_resolution * 2) {
-            TCC0->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV2_Val);
+            timer->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV2_Val);
             pwmPeriod = cycles / 2;
         } else
         if(cycles < timer_resolution * 4) {
-            TCC0->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV4_Val);
+            timer->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV4_Val);
             pwmPeriod = cycles / 4;
         } else
         if(cycles < timer_resolution * 8) {
-            TCC0->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV8_Val);
+            timer->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV8_Val);
             pwmPeriod = cycles / 8;
         } else
         if(cycles < timer_resolution * 16) {
-            TCC0->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV16_Val);
+            timer->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV16_Val);
             pwmPeriod = cycles / 16;
         } else
         if(cycles < timer_resolution * 64) {
-            TCC0->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV64_Val);
+            timer->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV64_Val);
             pwmPeriod = cycles / 64;
         } else
         if(cycles < timer_resolution * 1024) {
-            TCC0->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV1024_Val);
+            timer->CTRLA.reg |= TCC_CTRLA_PRESCALER(TCC_CTRLA_PRESCALER_DIV1024_Val);
             pwmPeriod = cycles / 1024;
         }
-        TCC0->PER.reg = pwmPeriod;
-        while (TCC0->SYNCBUSY.bit.PER);
+        timer->PER.reg = pwmPeriod;
+        while (timer->SYNCBUSY.bit.PER);
     }
     void start() {
-        TCC0->CTRLA.bit.ENABLE = 1;                         // Turn on the output
-        while (TCC0->SYNCBUSY.bit.ENABLE);                  // Wait for synchronization
+        timer->CTRLA.bit.ENABLE = 1;                         // Turn on the output
+        while (timer->SYNCBUSY.bit.ENABLE);                  // Wait for synchronization
     }
     void stop() {
-        TCC0->CTRLA.bit.ENABLE = 0;                         // Turn on the output
-        while (TCC0->SYNCBUSY.bit.ENABLE);                  // Wait for synchronization
+        timer->CTRLA.bit.ENABLE = 0;                         // Turn on the output
+        while (timer->SYNCBUSY.bit.ENABLE);                  // Wait for synchronization
     }
 
     void attachInterrupt(void (*isr)()) {
         isrCallback = isr;                                  // Store the interrupt callback function
-        TCC0->INTENSET.reg = TCC_INTENSET_OVF;              // Set the interrupt to occur on overflow
-        NVIC_EnableIRQ((IRQn_Type) TCC0_IRQn);              // Enable the interrupt (clock is still off)    
+        timer->INTENSET.reg = TCC_INTENSET_OVF;              // Set the interrupt to occur on overflow
+
+        if(timer == TCC0) {
+             NVIC_EnableIRQ((IRQn_Type) TCC0_IRQn);              // Enable the interrupt (clock is still off)
+        }  
+        else if(timer == TCC1) {
+             NVIC_EnableIRQ((IRQn_Type) TCC1_IRQn);              // Enable the interrupt (clock is still off)
+        }  
+        else if(timer == TCC2) {
+             NVIC_EnableIRQ((IRQn_Type) TCC2_IRQn);              // Enable the interrupt (clock is still off)
+        }  
     }
     
     void detachInterrupt() {
-        NVIC_DisableIRQ((IRQn_Type) TCC0_IRQn);              // Enable the interrupt (clock is still off)    
+        if(timer == TCC0) {
+             NVIC_DisableIRQ((IRQn_Type) TCC0_IRQn);              // Disable the interrupt 
+        }  
+        else if(timer == TCC1) {
+             NVIC_DisableIRQ((IRQn_Type) TCC1_IRQn);              // Disable the interrupt 
+        }  
+        else if(timer == TCC2) {
+             NVIC_DisableIRQ((IRQn_Type) TCC2_IRQn);              // Disable the interrupt 
+        }   
     }
 };
 
