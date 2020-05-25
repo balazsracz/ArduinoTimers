@@ -1,6 +1,6 @@
 # ArduinoTimers
-This library is similar to TimerThree, but written so that you can use Timer 1, 3, 4, or 5 on the mega or TCC0, 1, and 2 on the SAMD21 concurrently.
-It is still in the early stages of development, it is relatively inefficient at the moment. 
+This library is similar to TimerThree, but written so that you can use Timer 1, 3, 4, or 5 on the mega or TCC0, 1, and 2 on the SAMD21 concurrently. It does not support PWM generation by the timers, instead it simply calls a registered interrupt function at the interval specified. Future functionality may include PWM output.
+It is still in the early stages of development, and is relatively inefficient at the moment. 
 
 To use this library, copy the url ```https://github.com/davidcutting42/ArduinoTimers.git#master``` into ```lib_deps``` on platformIO, and include it with ```#include <ArduinoTimers.h>``` in your main.cpp file. You'll also need to add either ATSAMD21 or ATMEGA2560 to your build flags (do this in platformIO by adding ```build_flags = -D ATMEGA2560``` to your ```platformio.ini``` file)
 
