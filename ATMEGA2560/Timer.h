@@ -53,7 +53,7 @@ void (*isrCallback)();
         if(microseconds == lastMicroseconds)
             return;
         lastMicroseconds = microseconds;
-        const unsigned long cycles = (F_CPU / 1000000) * microseconds;
+        const unsigned long cycles = (F_CPU / 2000000) * microseconds;
         if (cycles < timer_resolution) {
             clockSelectBits = 1 << 0;
             pwmPeriod = cycles;
