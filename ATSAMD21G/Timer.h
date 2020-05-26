@@ -135,9 +135,9 @@ public:
     }
 };
 
-extern Timer TimerTCC0;
-extern Timer TimerTCC1;
-extern Timer TimerTCC2;
+extern Timer TimerA;
+extern Timer TimerB;
+extern Timer TimerC;
 
 
 

@@ -53,7 +53,7 @@ void (*isrCallback)();
         if(microseconds == lastMicroseconds)
             return;
         lastMicroseconds = microseconds;
-        const unsigned long cycles = (F_CPU / 2000000) * microseconds;
+        const unsigned long cycles = (F_CPU / 1000000) * microseconds;
         if (cycles < timer_resolution) {
             clockSelectBits = 1 << 0;
             pwmPeriod = cycles;
@@ -105,22 +105,22 @@ void (*isrCallback)();
         case 1:
             TCCR1B = 0;
             TCNT1 = 0;		// TODO: does this cause an undesired interrupt?
-            TCCR1B = _BV(WGM13) | clockSelectBits;
+            TCCR1B = _BV(WGM13) | _BV(WGM12) | clockSelectBits;
             break;
         case 3:
             TCCR3B = 0;
             TCNT3 = 0;		// TODO: does this cause an undesired interrupt?
-            TCCR3B = _BV(WGM33) | clockSelectBits;
+            TCCR3B = _BV(WGM33) | _BV(WGM32) | clockSelectBits;
             break;
         case 4:
             TCCR4B = 0;
             TCNT4 = 0;		// TODO: does this cause an undesired interrupt?
-            TCCR4B = _BV(WGM43) | clockSelectBits;
+            TCCR4B = _BV(WGM43) | _BV(WGM42) | clockSelectBits;
             break;
         case 5:
             TCCR5B = 0;
             TCNT5 = 0;		// TODO: does this cause an undesired interrupt?
-            TCCR5B = _BV(WGM53) | clockSelectBits;
+            TCCR5B = _BV(WGM53) | _BV(WGM52) | clockSelectBits;
             break;
         }
         
@@ -130,16 +130,16 @@ void (*isrCallback)();
         switch (timer_num)
         {
         case 1:
-            TCCR1B = _BV(WGM13);
+            TCCR1B = _BV(WGM13) | _BV(WGM12);
             break;
         case 3:
-            TCCR3B = _BV(WGM33);
+            TCCR3B = _BV(WGM33) | _BV(WGM32);
             break;
         case 4:
-            TCCR4B = _BV(WGM43);
+            TCCR4B = _BV(WGM43) | _BV(WGM42);
             break;
         case 5:
-            TCCR5B = _BV(WGM53);
+            TCCR5B = _BV(WGM53) | _BV(WGM52);
             break;
         }        
     }
@@ -184,10 +184,10 @@ void (*isrCallback)();
 
 };
 
-extern Timer Timer1;
-extern Timer Timer3;
-extern Timer Timer4;
-extern Timer Timer5;
+extern Timer TimerA;
+extern Timer TimerB;
+extern Timer TimerC;
+extern Timer TimerD;
 
 
 
