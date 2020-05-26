@@ -1,5 +1,5 @@
-#ifndef ATMEGA2560Timer_h
-#define ATMEGA2560Timer_h
+#ifndef ATMEGA328Timer_h
+#define ATMEGA328Timer_h
 
 #include "../VirtualTimer.h"
 #include <Arduino.h>

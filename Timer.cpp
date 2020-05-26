@@ -1,4 +1,4 @@
-#if defined(ATSAMD21G)
+#if defined(ARDUINO_SAMD_ZERO)
 
 #include "ATSAMD21G/Timer.h"
 
@@ -26,7 +26,7 @@ void TCC2_Handler() {
         TimerC.isrCallback();
     }
 }
-#elif defined(ATMEGA2560)
+#elif defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
 
 #include "ATMEGA2560/Timer.h"
 
@@ -55,7 +55,7 @@ ISR(TIMER5_OVF_vect)
     TimerD.isrCallback();
 }
 
-#elif defined(ATMEGA328)
+#elif defined(ARDUINO_AVR_UNO)      // Todo: add other 328 boards for compatibility
 
 #include "ATMEGA328/Timer.h"
 

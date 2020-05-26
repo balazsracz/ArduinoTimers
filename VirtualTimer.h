@@ -15,6 +15,4 @@ private:
 
 };
 
-
-
 #endif
