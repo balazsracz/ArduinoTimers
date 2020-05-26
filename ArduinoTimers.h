@@ -10,7 +10,7 @@
 #elif defined(ATSAM3X8E)
     #error "ATSAM3X8E (Due) support for ArduinoTimers has not been written yet"
 #elif defined(ATMEGA328)
-    #error "ATMEGA328 (Uno) support for ArduinoTimers has not been written yet"
+    #include "ATMEGA328/Timer.h"
 #else
     #error "Cannot compile - please define one of the board constants in the ArduinoTimers library (ATSAMD21G, ATMEGA2560, ATSAM3X8E, ATMEGA328) as a build flag in platformIO"
 #endif
