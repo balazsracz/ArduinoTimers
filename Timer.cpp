@@ -59,23 +59,17 @@ ISR(TIMER5_OVF_vect)
 
 #include "ATMEGA328/Timer.h"
 
-Timer TimerA(0);
-Timer TimerB(1);
-Timer TimerC(2);
+Timer TimerA(1);
+Timer TimerB(2);
 
-ISR(TIMER0_OVF_vect)
+ISR(TIMER1_OVF_vect)
 {
     TimerA.isrCallback();
 }
 
-ISR(TIMER1_OVF_vect)
-{
-    TimerB.isrCallback();
-}
-
 ISR(TIMER2_OVF_vect)
 {
-    TimerC.isrCallback();
+    TimerB.isrCallback();
 }
 
 #endif

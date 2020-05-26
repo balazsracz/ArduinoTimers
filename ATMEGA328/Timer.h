@@ -16,7 +16,7 @@ void (*isrCallback)();
     Timer(int timer_num) {
         switch (timer_num)
         {
-        case 0:
+        //case 0:
         case 2:
             timer_resolution = 256;
             break;
@@ -31,10 +31,10 @@ void (*isrCallback)();
     void initialize() {
         switch (timer_num)
         {
-        case 0:
-            TCCR0B = _BV(WGM02);
-            TCCR0A = _BV(WGM00) | _BV(WGM01);
-            break;
+        // case 0:
+        //     TCCR0B = _BV(WGM02);
+        //     TCCR0A = _BV(WGM00) | _BV(WGM01);
+        //     break;
         case 1:
             TCCR1B = _BV(WGM13) | _BV(WGM12);
             TCCR1A = _BV(WGM11);
@@ -86,7 +86,7 @@ void (*isrCallback)();
                 pwmPeriod = timer_resolution - 1;
             }
             break;
-        case 0:
+        //case 0:
         case 1:
             if (cycles < timer_resolution) {
                 clockSelectBits = 1 << 0;
@@ -116,10 +116,10 @@ void (*isrCallback)();
 
         switch (timer_num)
         {
-        case 0:
-            OCR0A = pwmPeriod;
-            TCCR0B = _BV(WGM02) | clockSelectBits;
-            break;
+        // case 0:
+        //     OCR0A = pwmPeriod;
+        //     TCCR0B = _BV(WGM02) | clockSelectBits;
+        //     break;
         case 1:
             ICR1 = pwmPeriod;
             TCCR1B = _BV(WGM13) | _BV(WGM12) | clockSelectBits;
@@ -134,11 +134,11 @@ void (*isrCallback)();
     void start() {
         switch (timer_num)
         {
-        case 0:
-            TCCR0B = 0;
-            TCNT0 = 0;		// TODO: does this cause an undesired interrupt?
-            TCCR0B = _BV(WGM02) | clockSelectBits;
-            break;
+        // case 0:
+        //     TCCR0B = 0;
+        //     TCNT0 = 0;		// TODO: does this cause an undesired interrupt?
+        //     TCCR0B = _BV(WGM02) | clockSelectBits;
+        //     break;
         case 1:
             TCCR1B = 0;
             TCNT1 = 0;		// TODO: does this cause an undesired interrupt?
@@ -156,9 +156,9 @@ void (*isrCallback)();
     void stop() {
         switch (timer_num)
         {
-        case 0:
-            TCCR0B = _BV(WGM02);
-            break;
+        // case 0:
+        //     TCCR0B = _BV(WGM02);
+        //     break;
         case 1:
             TCCR1B = _BV(WGM13) | _BV(WGM12);
             break;
@@ -173,9 +173,9 @@ void (*isrCallback)();
 	    
         switch (timer_num)
         {
-        case 0:
-            TIMSK0 = _BV(TOIE0); 
-            break;
+        // case 0:
+        //     TIMSK0 = _BV(TOIE0); 
+        //     break;
         case 1:
             TIMSK1 = _BV(TOIE1); 
             break;
@@ -188,9 +188,9 @@ void (*isrCallback)();
     void detachInterrupt() {
         switch (timer_num)
         {
-        case 0:
-            TIMSK0 = 0; 
-            break;
+        // case 0:
+        //     TIMSK0 = 0; 
+        //     break;
         case 1:
             TIMSK1 = 0; 
             break;
@@ -204,6 +204,5 @@ void (*isrCallback)();
 
 extern Timer TimerA;
 extern Timer TimerB;
-extern Timer TimerC;
 
 #endif
