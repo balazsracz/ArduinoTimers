@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #if defined(ARDUINO_SAMD_ZERO)
 
 #if defined(SAMC21)
