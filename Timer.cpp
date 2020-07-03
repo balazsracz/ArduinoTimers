@@ -1,6 +1,10 @@
 #if defined(ARDUINO_SAMD_ZERO)
 
+#if defined(SAMC21)
+#include "ATSAMC21G/Timer.h"
+#else
 #include "ATSAMD21G/Timer.h"
+#endif
 
 Timer TimerA(TCC0);
 Timer TimerB(TCC1);
